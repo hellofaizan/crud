@@ -1,8 +1,9 @@
 import React from 'react'
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import Notes from '@/components/notes'
+import axios from 'axios'
 
-const Home = ({allNotes}) => {
+const Home = () => {
   const [form, setForm] = useState({ title: '', content: '' })
   const [notes, setNotes] = useState([])
 
@@ -37,33 +38,27 @@ const Home = ({allNotes}) => {
 
   return (
     <>
-      <div className='flex flex-col w-full items-center mt-12'>
-        <p className="text-2xl">
-          Take Notes with Prisma and PostgresSQL
-        </p>
+      <div className='w-full flex justify-center p-5'>
+        <div className='flex flex-col w-full md:w-1/2 items-center mt-12'>
+          <div className='w-full'>
+            <p className="text-2xl">
+              Take Notes with Prisma and PostgresSQL
+            </p>
 
-        <form className='mt-8' onSubmit={e => {
-          e.preventDefault()
-          createNote(form)
-        }}>
-          <input type="text" className="w-full p-2 border border-gray-300 rounded-md" placeholder="Title" value={form.title} onChange={e => setTitle(e.target.value)}></input>
-          <textarea rows={8} className="w-full p-2 mt-2 border border-gray-300 rounded-md" placeholder="Content" value={form.content} onChange={e => setContent(e.target.value)}></textarea>
-          <button className="w-full p-2 mt-2 text-white bg-blue-500 rounded-md" type="submit">Create Note</button>
-        </form>
+            <form className='mt-8' onSubmit={e => {
+              e.preventDefault()
+              createNote(form)
+            }}>
+              <input type="text" className="w-full p-2 border dark:bg-[#363636] border-gray-500 rounded-md" placeholder="Title" value={form.title} onChange={e => setTitle(e.target.value)}></input>
+              <textarea rows={8} className="w-full p-2 mt-2 border dark:bg-[#363636] border-gray-500 rounded-md" placeholder="Content" value={form.content} onChange={e => setContent(e.target.value)}></textarea>
+              <button className="w-full p-2 mt-2 text-white bg-blue-500 rounded-md" type="submit">Create Note</button>
+            </form>
+          </div>
+          <Notes />
+        </div>
       </div>
     </>
   )
-}
-
-export const getServerSideProps = async () => {
-  const res = await fetch('http://localhost:3000/api/notes')
-  const { data } = await res.json()
-
-  return {
-    props: {
-      allNotes: data
-    }
-  }
 }
 
 export default Home
